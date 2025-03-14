@@ -1,52 +1,34 @@
 import java.util.*;
-    
 public class Calc{
-    static boolean addStack(char check, Stack<Character> stack){
+
+    static boolean addStack(char newElement, Stack<Character> stack){
         boolean decision=false;
         if(stack.isEmpty()){
             decision=true;
         }
         else{
-
-            char elementPresent=stack.peek().toString().charAt(0);
-            switch(check){
-                case '+':
-                    if(elementPresent == '*' || elementPresent == '/' || elementPresent == '-' || elementPresent == '+'){
-                        decision = false;
-                    }
-                    else{
-                        decision=true;
-                    }
-                break;
-
-                case '-':
-                    if(elementPresent == '*' || elementPresent == '/' || elementPresent == '+' || elementPresent == '-'){
-                        decision = false;
-                    }
-                    else{
-                        decision=true;
-                    }
-                break;
-                
-                case '*':
-                    if(elementPresent == '+' || elementPresent == '-'){
-                        decision = true;
-                    }
-                    else{
-                        decision=false;
-                    }
-                break;
-
-                case '/':
-                    if(elementPresent == '+' || elementPresent == '-'){
-                        decision = true;
-                    }
-                    else{
-                        decision=false;
-                    }
-                break;
+            char elementPresent=stack.peek();
+            if(newElement == '+' || newElement == '-'){
+                if(elementPresent == '*' || elementPresent == '/' || elementPresent == '-' || elementPresent == '+'){
+                    decision = false;
+                }
+                else{
+                    decision=true;
+                }
             }
-        }
+            else if(newElement == '*' || newElement == '/'){
+                
+                if(elementPresent == '+' || elementPresent == '-'){
+                    decision = true;
+                }
+                else{
+                    decision=false;
+                }
+            }
+            else if(newElement == '^'){
+                decision = true;    
+            }
+        }    
         return decision;
     }
 
@@ -60,13 +42,11 @@ public class Calc{
             if (Character.isDigit(token)) {
                 temp="";
                 while(index<output.length() && Character.isDigit(token)){  
-                    System.out.println("Token "+token);
                     temp+=Character.getNumericValue(token);
                     index++;
                     token=output.charAt(index);
                 }
                 resultStack.push(Integer.parseInt(temp));
-                System.out.println("Result Stack: "+resultStack);
             }
             else if(Character.isWhitespace(token)){
                 index++;
@@ -90,6 +70,8 @@ public class Calc{
                 case '/':
                     resultStack.push(a/b); 
                 break;
+                case '^':
+                    resultStack.push((int)Math.pow(a,b));
                 }    
                 index++;
             }
@@ -97,11 +79,6 @@ public class Calc{
         result=(int)resultStack.pop();
         return result;
     }
-
-    // static int examineNumber(String inputString){
-
-    //     return 0;
-    // }
 
     public static void main(String args[]){
         Scanner sc= new Scanner(System.in);
@@ -121,32 +98,26 @@ public class Calc{
                 }
                 output+=" ";
             }
-            else if(equation.charAt(j) == '+' || equation.charAt(j) == '-' || equation.charAt(j) == '*' || equation.charAt(j) == '/'){
+            else if(equation.charAt(j) == '+' || equation.charAt(j) == '-' || equation.charAt(j) == '*' || equation.charAt(j) == '/'  || equation.charAt(j) == '^'){
                 flag=false;
                 while(flag==false){
                     if(addStack(equation.charAt(j), stack)){
                         stack.push(equation.charAt(j));
                         flag=true;    
-                        System.out.println(stack);
                     }    
                     else{
                         char element=stack.pop().toString().charAt(0);
                         output+=element;    
-                        System.out.println(stack);
                         flag=false;
                     }
                 }
                 j+=1;
             }    
         }
-        //adding the rest of the stack
-        System.err.println("output: "+output);
         while(!stack.empty()){
             char element=stack.pop().toString().charAt(0);
             output+=element;
-        }
-        System.out.println(stack);
-        System.out.println(output);  
+        }  
         int ans=RPM(output);
         System.out.println(ans);  
     }
