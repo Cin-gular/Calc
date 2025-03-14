@@ -27,7 +27,7 @@ public class Calc{
             }
             else if(newElement == '^'){
                 decision = true;    
-            }
+            }//test
         }    
         return decision;
     }
