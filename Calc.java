@@ -57,22 +57,21 @@ public class Calc{
                 }
                 int b=Integer.parseInt(resultStack.pop().toString());
                 int a=Integer.parseInt(resultStack.pop().toString());
-            switch(token){
-                case '+':
-                    resultStack.push(a+b); 
-                break;
-                case '-':
-                    resultStack.push(a-b); 
-                break;
-                case '*':
-                    resultStack.push(a*b); 
-                break;
-                case '/':
-                    resultStack.push(a/b); 
-                break;
-                case '^':
+                if(token=='+'){
+                    resultStack.push(a+b);
+                }
+                else if(token=='-'){
+                    resultStack.push(a-b);
+                }
+                else if(token=='*'){
+                    resultStack.push(a*b);
+                }
+                else if(token=='/'){
+                    resultStack.push(a/b);
+                }
+                else if(token=='^'){
                     resultStack.push((int)Math.pow(a,b));
-                }    
+                }   
                 index++;
             }
         }
